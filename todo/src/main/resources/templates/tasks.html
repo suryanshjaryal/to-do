@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task List</title>
+  <link rel="stylesheet" href="/css/index.css"> <!-- Link to the CSS file -->
+  <style>
+    .completed {
+      text-decoration: line-through; /* Strikethrough style */
+      color: gray; /* Optional: Change text color for completed tasks */
+    }
+    .tick {
+      color: green; /* Green color for the tick */
+      font-size: 1.2em; /* Adjust size of the tick */
+      margin-left: 5px; /* Space between task text and tick */
+    }
+    .completed-label {
+      background-color: #28a745; /* Green background */
+      color: white; /* White text */
+      padding: 5px 10px; /* Padding for the label */
+      border-radius: 4px; /* Rounded corners */
+      margin-right: 10px; /* Space between label and delete button */
+    }
+    .delete-button {
+      background-color: #dc3545; /* Red background */
+      color: white; /* White text */
+      border: none; /* No border */
+      padding: 5px 10px; /* Padding for the button */
+      border-radius: 4px; /* Rounded corners */
+      cursor: pointer; /* Pointer cursor on hover */
+    }
+  </style>
+</head>
+<body>
+<h1>Task Management</h1>
+<div class="form-container">
+  <input type="text" id="taskInput" placeholder="Add a new task...">
+  <button onclick="addTask()">Add Task</button>
+</div>
+<table id="taskTable">
+  <thead>
+  <tr>
+    <th>Task</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <!-- Tasks will be added here dynamically -->
+  </tbody>
+</table>
+
+<script>
+  function addTask() {
+      const taskInput = document.getElementById('taskInput');
+      const taskValue = taskInput.value.trim();
+      if (taskValue) {
+          const tableBody = document.querySelector('#taskTable tbody');
+          const newRow = document.createElement('tr');
+
+          newRow.innerHTML = `
+              <td>${taskValue}</td>
+              <td>
+                  <button onclick="markAsCompleted(this)">Complete</button>
+                  <button onclick="deleteTask(this)">Delete</button>
+              </td>
+          `;
+          tableBody.appendChild(newRow);
+          taskInput.value = ''; // Clear input field
+      }
+  }
+
+  function markAsCompleted(button) {
+      const row = button.parentElement.parentElement;
+      const taskCell = row.cells[0];
+
+      // Add strikethrough and tick icon
+      taskCell.classList.add('completed');
+      const tick = document.createElement('span');
+      tick.textContent = '✔'; // Unicode for check mark
+      tick.classList.add('tick');
+      taskCell.appendChild(tick);
+
+      // Replace action buttons with completed label and delete button
+      const actionsCell = row.cells[1];
+      actionsCell.innerHTML = `
+          <span class="completed-label">Completed</span>
+          <button class="delete-button" onclick="deleteTask(this)">Delete</button>
+      `;
+  }
+
+  function deleteTask(button) {
+      const row = button.parentElement.parentElement;
+      row.parentElement.removeChild(row); // Remove the task
+  }
+</script>
+</body>
+</html>
