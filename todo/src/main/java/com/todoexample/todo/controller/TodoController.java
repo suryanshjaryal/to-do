@@ -24,6 +24,6 @@ public class TodoController {
     public String getTasks(Model model) {
         List<Task> tasks =  todoService.getAllTasks();
         model.addAttribute("tasks", tasks);
-        return "tasks";
+        return "index";
     }
 }
